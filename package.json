@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "vercel-build": "echo hello"
+    "build": "echo 'you can leave this empty or put build command here'",
+    "vercel-build": "node app.js"
   },
   "author": "",
   "license": "ISC",
