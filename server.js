@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+const server = express();
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bossRoutes = require("./routes/boss");
@@ -17,7 +17,7 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.use((req, res, next) => {
+server.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -30,11 +30,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
+server.use(express.json());
 
-app.use("/boss", bossRoutes);
-app.use("/client", clientRoutes);
-app.use("/payment", paymentRoutes);
+server.use("/boss", bossRoutes);
+server.use("/client", clientRoutes);
+server.use("/payment", paymentRoutes);
 
 // Define a function to normalize the port value
 const normalizePort = (val) => {
@@ -51,10 +51,10 @@ const normalizePort = (val) => {
 // Get the port value from the environment variable PORT or use 3001 as a default
 const port = normalizePort(process.env.PORT) || 3001;
 
-app.get("/", (req, res) => {
+server.get("/", (req, res) => {
   res.send("Order me!");
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Order app running`);
 });
