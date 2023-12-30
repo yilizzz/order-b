@@ -4,9 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "build": "echo 'you can leave this empty or put build command here'",
-    "vercel-build": "node app.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",

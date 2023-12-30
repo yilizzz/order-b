@@ -24,8 +24,8 @@ const processImage = async (req, res, next) => {
   try {
     const buffer = await sharp(req.file.buffer)
       .resize({
-        width: 300,
-        height: 300,
+        width: 800,
+        height: 800,
         fit: sharp.fit.cover,
       })
       .webp({ quality: 50 })
