@@ -51,10 +51,10 @@ const normalizePort = (val) => {
 // Get the port value from the environment variable PORT or use 3001 as a default
 const port = normalizePort(process.env.PORT) || 3001;
 
-server.get("/", (req, res) => {
-  res.send("Order me!");
-});
+// server.get("/", (req, res) => {
+//   res.send("Order me!");
+// });
 
-server.listen(port, () => {
-  console.log(`Order app running`);
-});
+// server.listen(port, () => {
+//   console.log(`Order app running`);
+// });
