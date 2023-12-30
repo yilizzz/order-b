@@ -1,4 +1,13 @@
 {
+  "name": "order-b",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.481.0",
     "@aws-sdk/s3-request-presigner": "^3.481.0",
