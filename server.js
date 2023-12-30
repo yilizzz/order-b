@@ -55,6 +55,6 @@ const port = normalizePort(process.env.PORT) || 3001;
 //   res.send("Order me!");
 // });
 
-// server.listen(port, () => {
-//   console.log(`Order app running`);
-// });
+server.listen(port, () => {
+  console.log(`Order app running`);
+});
