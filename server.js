@@ -2,21 +2,13 @@ const express = require("express");
 const server = express();
 require("dotenv").config();
 const path = require("path");
-const mongoose = require("mongoose");
+
 const bossRoutes = require("./routes/boss");
 const clientRoutes = require("./routes/client");
 const paymentRoutes = require("./routes/payment");
+const connectDB = require("./connectDB");
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URL);
-    console.log("MongoDB Connected !");
-  } catch (err) {
-    console.log("MongoDB Connection Failed");
-    console.error(err);
-  }
-};
-connectDB();
+const connectMongoose = new connectDB();
 
 server.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
