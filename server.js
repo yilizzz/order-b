@@ -31,33 +31,15 @@ server.use((req, res, next) => {
   next();
 });
 server.use(express.json());
-// server.use(express.static(path.join(__dirname, "../order-f/build")));
-// server.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../order-f/build/index.html"));
-// });
 
 server.use("/boss", bossRoutes);
 server.use("/client", clientRoutes);
 server.use("/payment", paymentRoutes);
-
-// Define a function to normalize the port value
-const normalizePort = (val) => {
-  // Parse the value as an integer
-  const port = parseInt(val, 10);
-  if (!isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
-};
 // Get the port value from the environment variable PORT or use 3001 as a default
-// const port = normalizePort(process.env.PORT) || 3001;
 const port = process.env.PORT || 3001;
-// server.get("/", (req, res) => {
-//   res.send("Order me!");
-// });
+server.get("/", (req, res) => {
+  res.send("Order me!");
+});
 
 server.listen(port, () => {
   console.log(`Order app running`);
