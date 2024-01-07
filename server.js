@@ -27,7 +27,7 @@ server.use(express.json());
 server.use("/boss", bossRoutes);
 server.use("/client", clientRoutes);
 server.use("/payment", paymentRoutes);
-// Get the port value from the environment variable PORT or use 3001 as a default
+
 const port = process.env.PORT || 3001;
 server.get("/", (req, res) => {
   res.send("Order me!");
