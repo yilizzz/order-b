@@ -1,9 +1,14 @@
 const Services = require("../models/services");
+const ServiceFR = require("../models/service-fr");
 const mongoose = require("mongoose");
 
 exports.getAllServices = async (req, res, next) => {
+  const language = req.query.language;
+  let services;
   try {
-    const services = await Services.find();
+    language === "Français"
+      ? (services = await ServiceFR.find())
+      : (services = await Services.find());
     res.status(200).json(services);
   } catch (error) {
     res.status(400).json(error);
