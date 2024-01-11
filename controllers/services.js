@@ -6,7 +6,7 @@ exports.getAllServices = async (req, res, next) => {
   const language = req.query.language;
   let services;
   try {
-    language === "Français"
+    language === "fr"
       ? (services = await ServiceFR.find())
       : (services = await Services.find());
     res.status(200).json(services);
