@@ -2,15 +2,23 @@ const Services = require("../models/services");
 const ServiceFR = require("../models/service-fr");
 const mongoose = require("mongoose");
 
+/** This function retrieves all services based on the requested language
+ *  */
 exports.getAllServices = async (req, res, next) => {
-  const language = req.query.language;
-  let services;
+  // Extract the language from the request query
+  const { language } = req.query;
+
+  // Determine the appropriate model to use based on the language
+  const Service = language === "fr" ? ServiceFR : Services;
+
   try {
-    language === "fr"
-      ? (services = await ServiceFR.find())
-      : (services = await Services.find());
+    // Fetch all services from the determined model
+    const services = await Service.find();
+
+    // Send the fetched services as a response with status 200
     res.status(200).json(services);
   } catch (error) {
+    // If an error occurs, send the error as a response with status 400
     res.status(400).json(error);
   }
 };
@@ -33,21 +41,29 @@ const assembleObject = (object, file) => {
  * restful API, add a new service after verified user's token
  * */
 exports.addService = async (req, res, next) => {
+  const lang = req.params.lang;
   const infoObject = assembleObject(JSON.parse(req.body.info), req.file);
-  const newService = new Services(infoObject);
+  const newService =
+    lang === "en" ? new Services(infoObject) : ServiceFR(infoObject);
+
   try {
-    newService.save();
+    await newService.save();
     res.status(200).json({ message: "New service added" });
   } catch (error) {
     res.status(400).json(error);
   }
 };
+
 /**
  * get a service by id
  */
 exports.getServiceById = async (req, res, next) => {
+  const lang = req.params.lang;
   try {
-    const service = await Services.findById(req.params.id);
+    const service =
+      lang === "en"
+        ? await Services.findById(req.params.id)
+        : await ServiceFR.findById(req.params.id);
     res.status(200).json(service);
   } catch (error) {
     res.status(400).json(error);
@@ -57,8 +73,10 @@ exports.getServiceById = async (req, res, next) => {
  * delete a service by id
  */
 exports.deleteServiceById = async (req, res, next) => {
+  const lang = req.params.lang;
+  const Service = lang === "en" ? Services : ServiceFR;
   try {
-    await Services.findByIdAndDelete(req.params.id);
+    await Service.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Service deleted" });
   } catch (error) {
     res.status(400).json(error);
@@ -68,25 +86,21 @@ exports.deleteServiceById = async (req, res, next) => {
  * update a service by id
  */
 exports.updateServiceById = async (req, res, next) => {
+  const { lang } = req.params;
   const info = JSON.parse(req.body.info);
+  const Service = lang === "en" ? Services : ServiceFR;
+  const data = req.file ? assembleObject(info, req.file) : info;
+
   try {
-    if (req.file) {
-      const infoFullObject = assembleObject(info, req.file);
-      await Services.findByIdAndUpdate(req.params.id, infoFullObject, {
-        new: true,
-      });
-    } else {
-      await Services.findByIdAndUpdate(req.params.id, info, { new: true });
-    }
-    res.status(200).json({
-      message: "Service updated",
-    });
+    await Service.findByIdAndUpdate(req.params.id, data, { new: true });
+    res.status(200).json({ message: "Service updated" });
   } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      console.log("Validation Error:", error.message);
-    } else {
-      console.log("Unknown Error:", error);
-    }
+    console.log(
+      error instanceof mongoose.Error.ValidationError
+        ? "Validation Error:"
+        : "Unknown Error:",
+      error.message
+    );
     res.status(400).json(error);
   }
 };
